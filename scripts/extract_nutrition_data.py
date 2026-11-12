@@ -1,3 +1,7 @@
+# Here I will extract nutrition data
+# It is a one time job, unless I need to change the source PDFs
+
+
 from dotenv import load_dotenv      # To load environment variables from a .env file
 load_dotenv()                       # Load environment variables from .env file
 
