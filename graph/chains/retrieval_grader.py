@@ -1,5 +1,8 @@
-# Here we define a retrieval grader chain that assesses the relevance of retrieved documents to a user question
+# Here I have defined a retrieval grader chain that assesses the relevance of retrieved documents to a user question
 
+
+from dotenv import load_dotenv          # To load environment variables from a .env file
+load_dotenv()                           # Load environment variables from .env file
 
 from langchain_core.prompts import ChatPromptTemplate           # To create a chat prompt template for the LLM
 from langchain_google_genai import ChatGoogleGenerativeAI       # To use the Google Generative AI LLM

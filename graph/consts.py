@@ -1,5 +1,5 @@
 # This is to avoid duplicate strings.
-# When we want to call a node in the graph, we can use these constants instead of hardcoding the strings.
+# When I want to call a node in the graph, we can use these constants instead of hardcoding the strings.
 
 
 RETRIEVE = "retrieve"

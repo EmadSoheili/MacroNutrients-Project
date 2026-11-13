@@ -1,6 +1,8 @@
-# Here we define a hallucination grader chain.s
+# Here I have defined a hallucination grader chain.
 # It uses the LLM to assess whether a generated answer is grounded in the retrieved sources.
 
+from dotenv import load_dotenv          # To load environment variables from a .env file
+load_dotenv()                           # Load environment variables from .env file
 
 from langchain_core.prompts import ChatPromptTemplate           # To create a chat prompt template for the LLM
 from langchain_google_genai import ChatGoogleGenerativeAI       # To use the Google Generative AI LLM

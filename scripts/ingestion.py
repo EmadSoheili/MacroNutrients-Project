@@ -18,7 +18,7 @@ from langchain_pinecone import PineconeVectorStore       # To interact with Pine
 EMBEDDING = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2")
 
 
-# Define Paths
+# Define Paths and constants
 DATA_FILE = Path("data/nutrition_db.json")
 INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "macronutrients-project")
 BATCH_SIZE = 50

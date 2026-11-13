@@ -1,5 +1,8 @@
-# Here we define a generation chain that uses the LLM to answer nutrition-related questions based on provided context.
+# Here I have defined a generation chain that uses the LLM to answer nutrition-related questions based on provided context.
 
+
+from dotenv import load_dotenv          # To load environment variables from a .env file
+load_dotenv()                           # Load environment variables from .env file
 
 from langchain_core.output_parsers import StrOutputParser       # To parse the output of the LLM as a string
 from langchain_core.prompts import ChatPromptTemplate           # To create a chat prompt template for the LLM
