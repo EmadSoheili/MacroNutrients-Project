@@ -7,7 +7,7 @@ from graph.state import GraphState                          # To manage the stat
 
 
 def generate(state: GraphState) -> Dict[str, Any]:
-    print (f"\n--- GENERATING ANSWER ---\n")
+    print (f"\n--- GENERATING ANSWER ---")
 
     question = state["question"]
     documents = state["documents"]

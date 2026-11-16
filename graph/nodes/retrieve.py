@@ -25,7 +25,7 @@ retriever = PineconeVectorStore(
 
 
 def retrieve(state: GraphState) -> Dict[str, Any]:
-    print("\n--- RETRIEVING RELEVANT DOCUMENTS ---\n")
+    print("\n--- RETRIEVING RELEVANT DOCUMENTS ---")
     
     question = state["question"]
     retry_count = state.get("retry_count", 0)

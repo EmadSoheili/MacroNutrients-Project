@@ -7,7 +7,7 @@ from graph.state import GraphState
 
 
 def grade_documents(state: GraphState) -> Dict[str, Any]:
-    print("\n--- CHECKING RETRIEVED DOCUMENTS RELEVANCE TO THE QUESTION ---\n")
+    print("\n--- CHECKING RETRIEVED DOCUMENTS RELEVANCE TO THE QUESTION ---")
 
     question = state["question"]
     documents = state["documents"]
@@ -28,11 +28,11 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
             print(f"--- GRADE: DOCUMENT IS NOT RELEVANT ({doc.metadata.get('food_name', 'Unknown')}) ---")
 
 
+    # Set web_search to True if no relevant documents are found
     if len(filtered_docs) == 0:
-        print("\n--- GRADE RESULT: NO RELEVANT DOCUMENTS FOUND - INITIATING WEB SEARCH ---\n")
-        web_search = True       # Set web_search to True if no relevant documents are found
-    else:
-        print(f"\n--- GRADE RESULT: {len(filtered_docs)} RELEVANT DOCUMENT(S) FOUND - PROCEEDING TO GENERATE ANSWER---\n")
+        print("\n--- GRADE RESULT: NO RELEVANT DOCUMENTS FOUND - INITIATING WEB SEARCH ---")
+        web_search = True       
+
 
     return{
         "documents": filtered_docs,

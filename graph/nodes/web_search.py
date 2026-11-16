@@ -17,7 +17,7 @@ web_search_tool = TavilySearch(max_results=3)
 
 # Define the web_search function that performs a web search based on the question in the state
 def web_search(state: GraphState) -> Dict[str, Any]:
-    print(f"\n--- PERFORMING WEB SEARCH ---\n")
+    print(f"\n--- PERFORMING WEB SEARCH ---")
 
     question = state["question"]
     documents = state.get("documents", None)
