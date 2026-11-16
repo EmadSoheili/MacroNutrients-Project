@@ -50,7 +50,7 @@
     </main>
 
     <!-- Input Box -->
-    <footer class="bg-slate-900 border-t border-slate-800 p-4">
+    <footer class="bg-slate-900 border-t border-slate-800 px-4 pt-4 pb-3">
         <form id="chat-form" class="max-w-4xl mx-auto flex gap-3">
             <input type="text" id="user-input" placeholder="Ask about food macros..." required
                    class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500">
@@ -59,6 +59,9 @@
                 Send
             </button>
         </form>
+        <p class="max-w-4xl mx-auto text-center text-[11px] text-slate-500 mt-2">
+            Powered by Gemini 3.5 Flash Lite • LangGraph Adaptive RAG • Pinecone &amp; Tavily
+        </p>
     </footer>
 
     <script src="/app.js"></script>
