@@ -1,13 +1,12 @@
 # Here I have created the generate node to generate answers to nutrition-related questions.
 
-
-from typing import Any, Dict                # To specify types for function arguments and return values
-from graph.chains.generation import generation_chain        # To use the generation chain
-from graph.state import GraphState                          # To manage the state of the graph
+from typing import Any, Dict
+from graph.chains.generation import generation_chain
+from graph.state import GraphState
 
 
 def generate(state: GraphState) -> Dict[str, Any]:
-    print (f"\n--- GENERATING ANSWER ---")
+    print("\n--- GENERATING ANSWER ---")
 
     question = state["question"]
     documents = state["documents"]
@@ -20,9 +19,19 @@ def generate(state: GraphState) -> Dict[str, Any]:
         {"context": context_str, "question": question}
     )
 
-    return{
+    # Extract only the current meal's macros so retries do not double-count
+    meal_macros = {
+        "calories": round(generation.calories, 1),
+        "protein_g": round(generation.protein_g, 1),
+        "carbs_g": round(generation.carbs_g, 1),
+        "fat_g": round(generation.fat_g, 1),
+        "fiber_g": round(generation.fiber_g, 1),
+    }
+
+    return {
         "documents": documents,
         "question": question,
-        "generation": generation,
+        "generation": generation.answer,
         "retry_count": retry_count,
+        "running_macros": meal_macros,
     }

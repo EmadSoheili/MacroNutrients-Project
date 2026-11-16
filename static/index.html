@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacroNutrients Calculator Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen flex flex-col">
+
+    <!-- Header & Macro Tracker Pills -->
+    <header class="bg-slate-900 border-b border-slate-800 p-4 flex flex-wrap justify-between items-center shadow-md">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl">🥗</span>
+            <h1 class="font-bold text-lg text-emerald-400">MacroNutrients Agentic RAG</h1>
+        </div>
+
+        <!-- Session Macro Tracker Pills -->
+        <div class="flex space-x-2 text-xs font-semibold">
+            <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">🔥 Cal: <span id="macro-cal" class="text-orange-400">0</span> kcal</div>
+            <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">🥩 Pro: <span id="macro-pro" class="text-blue-400">0</span>g</div>
+            <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">🍞 Carb: <span id="macro-carb" class="text-amber-400">0</span>g</div>
+            <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">🥑 Fat: <span id="macro-fat" class="text-rose-400">0</span>g</div>
+            <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">🌾 Fiber: <span id="macro-fiber" class="text-emerald-400">0</span>g</div>
+        </div>
+
+        <!-- Passkey Input -->
+        <div class="flex items-center space-x-2">
+            <input type="password" id="passkey-input" placeholder="Enter Passkey" class="bg-slate-800 border border-slate-700 text-xs px-3 py-1.5 rounded focus:outline-none focus:border-emerald-500">
+            <button id="save-passkey" class="bg-emerald-600 hover:bg-emerald-500 text-xs px-3 py-1.5 rounded font-medium transition">Set Key</button>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-1 flex overflow-hidden">
+        <!-- Chat Feed -->
+        <div class="flex-1 flex flex-col justify-between p-4 max-w-4xl mx-auto w-full">
+            <div id="chat-container" class="flex-1 overflow-y-auto space-y-4 pr-2">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm">
+                    <p class="text-sm text-slate-300">👋 Welcome! Ask me about any meal, food item, or target macros (e.g., *'What are the macros in 200g of chicken breast and 1 cup of cooked rice?'*).</p>
+                </div>
+            </div>
+
+            <!-- Input Form -->
+            <form id="chat-form" class="mt-4 flex gap-2">
+                <input type="text" id="user-input" placeholder="Ask about food macros..." class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500" autocomplete="off" required>
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded-xl text-sm font-semibold transition shadow-lg">Send</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

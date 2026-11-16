@@ -35,7 +35,7 @@ def decide_on_hallucination(state: GraphState):
     retry_count = state.get("retry_count", 0)
 
     # Add hard cap on retries to avoid infinite loops
-    if retry_count >= 3:
+    if retry_count >= 5:
         print("--- RETRY LIMIT REACHED, ROUTING TO END ---")
         return END
 

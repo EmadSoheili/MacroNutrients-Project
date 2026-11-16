@@ -20,7 +20,7 @@ INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "macronutrients-project")
 retriever = PineconeVectorStore(
     index_name=INDEX_NAME,
     embedding=EMBEDDING
-).as_retriever(search_kwargs={"k": 8})          # Retrieve top 8 similar documents
+).as_retriever(search_kwargs={"k": 6})          # Retrieve top 5 similar documents
 
 
 
