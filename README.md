@@ -7,19 +7,19 @@
 ![Pinecone](https://img.shields.io/badge/Pinecone-Vector_DB-black)
 ![Cloud Run](https://img.shields.io/badge/Google_Cloud-Run-4285F4?logo=googlecloud&logoColor=white)
 
-An **Adaptive Retrieval-Augmented Generation (RAG)** agent that calculates accurate macronutrients (calories, protein, carbs, fat, and fiber) for any meal or food item[cite: 2, 3]. Built with **LangGraph**, **Gemini 3.5 Flash Lite**[cite: 6], **Pinecone**[cite: 6, 7], **Tavily**[cite: 6], and **FastAPI**, and deployed on **Google Cloud Run**[cite: 1].
+An **Adaptive Retrieval-Augmented Generation (RAG)** agent that calculates accurate macronutrients (calories, protein, carbs, fat, and fiber) for any meal or food item. Built with **LangGraph**, **Gemini 3.5 Flash Lite**, **Pinecone**, **Tavily**, and **FastAPI**, and deployed on **Google Cloud Run**.
 
-* **Live Demo:** https://macronutrients-agent-814923894075.us-east1.run.app[cite: 1]
-* **Note:** Protected by a demo passkey in the top-right header[cite: 2].
+* **Live Demo:** https://macronutrients-agent-814923894075.us-east1.run.app
+* **Note:** Protected by a demo passkey in the top-right header.
 
 ---
 
 ## Key Features
 
 * **Self-Correcting RAG:** Grades retrieved nutrition documents, falls back to Tavily web search if a food is missing, and verifies calculations before responding.
-* **Live Node Streaming:** Streams LangGraph node execution (`retrieve` -> `grade_documents` -> `generate`) in real time via Server-Sent Events (SSE)[cite: 3].
-* **Session Macro Tracker:** Automatically updates **Macros of the Day** (`Cal`, `Pro`, `Carb`, `Fat`, `Fiber`) across queries[cite: 3].
-* **Source Citations:** Shows exact PDF page numbers or web sources for every calculation[cite: 3].
+* **Live Node Streaming:** Streams LangGraph node execution (`retrieve` -> `grade_documents` -> `generate`) in real time via Server-Sent Events (SSE).
+* **Session Macro Tracker:** Automatically updates **Macros of the Day** (`Cal`, `Pro`, `Carb`, `Fat`, `Fiber`) across queries.
+* **Source Citations:** Shows exact PDF page numbers or web sources for every calculation.
 
 ---
 
@@ -37,20 +37,20 @@ An **Adaptive Retrieval-Augmented Generation (RAG)** agent that calculates accur
 
 ![LangGraph Architecture](assets/graph.png)
 
-1. **Retrieve:** Searches the `macronutrients-project` Pinecone index for matching foods[cite: 7].
+1. **Retrieve:** Searches the `macronutrients-project` Pinecone index for matching foods.
 2. **Grade Documents:** Filters out irrelevant matches using structured Gemini outputs.
 3. **Web Search Fallback:** Queries Tavily if any requested food is missing from the local database.
-4. **Generate & Validate:** Scales values to requested portions, checks for hallucinations and completeness, and formats the response[cite: 3].
+4. **Generate & Validate:** Scales values to requested portions, checks for hallucinations and completeness, and formats the response.
 
 ---
 
 ## Tech Stack
 
-* **LLM & Embeddings:** Google Gemini 3.5 Flash Lite[cite: 6], Google Generative AI Embeddings
-* **Agent & Observability:** LangGraph[cite: 6], LangChain, LangSmith[cite: 7]
-* **Retrieval:** Pinecone[cite: 6, 7], Tavily Search API[cite: 6]
+* **LLM & Embeddings:** Google Gemini 3.5 Flash Lite, Google Generative AI Embeddings
+* **Agent & Observability:** LangGraph, LangChain, LangSmith
+* **Retrieval:** Pinecone, Tavily Search API
 * **Backend & Frontend:** FastAPI (SSE), SlowAPI, HTML, Tailwind CSS, JavaScript
-* **Cloud & CI/CD:** Docker, `uv`, Google Cloud Run[cite: 1], Cloud Build[cite: 5], Secret Manager
+* **Cloud & CI/CD:** Docker, `uv`, Google Cloud Run, Cloud Build, Secret Manager
 
 ---
 
@@ -61,13 +61,13 @@ An **Adaptive Retrieval-Augmented Generation (RAG)** agent that calculates accur
 * [FitForFilms: Macros of Common Foods (V3)](https://fitforfilms.com/wp-content/uploads/Macros-of-common-foods-V3.pdf)
 
 ### Offline Pipeline
-Two one-time scripts in `scripts/` build the vector database from the PDFs above[cite: 7, 8]:
+Two one-time scripts in `scripts/` build the vector database from the PDFs above:
 
-1. **PDF Extraction (`scripts/extract_nutrition_data.py`):** Extracts 62 pages of nutritional tables into `data/nutrition_db.json` (**1,455 food items**)[cite: 7, 8].
+1. **PDF Extraction (`scripts/extract_nutrition_data.py`):** Extracts 62 pages of nutritional tables into `data/nutrition_db.json` (**1,455 food items**).
    * ![PDF Processing 1](assets/PDF%20Processing%201.png)
    * ![PDF Processing 2](assets/PDF%20Processing%202.png)
 
-2. **Vector Ingestion (`scripts/ingestion.py`):** Embeds and upserts all 1,455 items into Pinecone in batches of 50[cite: 7, 8].
+2. **Vector Ingestion (`scripts/ingestion.py`):** Embeds and upserts all 1,455 items into Pinecone in batches of 50.
    * ![Ingestion](assets/Ingestion.png)
    * ![Pinecone](assets/Pinecone.png)
 
@@ -156,6 +156,6 @@ MacroNutrients-Project/
 
 ## Deployment & Security
 
-* **Google Cloud Run:** Containerized with Docker + `uv` and configured to scale to zero when idle[cite: 1].
-* **CI/CD:** Connected to GitHub via Cloud Build for automatic deployments on push to `main`[cite: 5].
+* **Google Cloud Run:** Containerized with Docker + `uv` and configured to scale to zero when idle.
+* **CI/CD:** Connected to GitHub via Cloud Build for automatic deployments on push to `main`.
 * **Security:** Secrets stored in Google Cloud Secret Manager, protected by `x-demo-passkey` header validation and `5/minute` IP rate limiting.
