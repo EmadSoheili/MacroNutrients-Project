@@ -91,9 +91,10 @@ MacroNutrients-Project/
 │   ├── PDF Processing 2.png            # PDF extraction log (Health Canada completion)
 │   └── Pinecone.png                    # Pinecone index dashboard screenshot
 ├── data/
-│   ├── FitForFilms.pdf                 # Source PDF 1: Macros of Common Foods
-│   ├── HealthCanada.pdf                # Source PDF 2: Nutrient Value of Common Foods
-│   └── nutrition_db.json               # 1,455 structured food records extracted from PDFs
+│   ├── extraction_checkpoint.json      # Page-by-page extraction checkpoint state
+│   ├── Macros-of-common-foods-V3.pdf   # Source PDF 1: FitForFilms Macros of Common Foods
+│   ├── nutrition_db.json               # 1,455 structured food records extracted from PDFs
+│   └── nvscf-vnqau-eng.pdf             # Source PDF 2: Health Canada Nutrient Value of Foods
 ├── graph/
 │   ├── chains/
 │   │   ├── __init__.py
@@ -110,3 +111,21 @@ MacroNutrients-Project/
 │   ├── __init__.py
 │   ├── consts.py                       # Node name constants
 │   ├── graph.py                        # StateGraph workflow and conditional routing
+│   └── state.py                        # GraphState TypedDict definition
+├── scripts/
+│   ├── extract_nutrition_data.py       # One-time Gemini PDF-to-JSON extraction script
+│   └── ingestion.py                    # One-time Pinecone batch embedding & upsert script
+├── src/
+│   └── macronutrients_project/         # Package source directory initialized by uv
+├── static/
+│   ├── app.js                          # SSE stream reader, Markdown parser & macro tracker
+│   └── index.html                      # Tailwind CSS dark-mode frontend UI
+├── .dockerignore                       # Excludes local env and cache files from Docker build
+├── .env                                # Local environment variables (gitignored)
+├── .gitignore                          # Git ignore rules
+├── .python-version                     # Python version pin (3.11)
+├── Dockerfile                          # Production container configuration using uv
+├── main.py                             # FastAPI server, SSE endpoint, passkey auth & rate limiter
+├── pyproject.toml                      # Project dependencies and metadata
+├── README.md                           # Project documentation
+└── uv.lock                             # Locked dependency versions
