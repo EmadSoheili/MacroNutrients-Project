@@ -16,10 +16,14 @@ An **Adaptive Retrieval-Augmented Generation (RAG)** agent that calculates accur
 
 ## Key Features
 
-* **Self-Correcting RAG:** Grades retrieved nutrition documents, falls back to Tavily web search if a food is missing, and verifies calculations before responding.
+* **Retrieval Relevance Grading:** Evaluates every retrieved Pinecone chunk with structured Gemini outputs (`retrieval_grader`) to filter out irrelevant food matches before generation.
+* **Dynamic Web Search Fallback:** Automatically routes to Tavily web search (`web_search`) whenever requested foods are missing from the local nutrition knowledge base.
+* **Hallucination & Grounding Verification:** Cross-checks generated macro math and food selections against the retrieved source documents (`hallucination_grader`), regenerating if ungrounded claims are detected.
+* **Answer Quality & Completeness Check:** Validates that the final response directly and completely answers every item in the user's prompt (`answer_grader`), routing back to web search if gaps remain.
+* **Portion Scaling & Meal Aggregation:** Accurately scales reference serving sizes to user-specified weights or quantities and computes summed meal totals.
 * **Live Node Streaming:** Streams LangGraph node execution (`retrieve` -> `grade_documents` -> `generate`) in real time via Server-Sent Events (SSE).
-* **Session Macro Tracker:** Automatically updates **Macros of the Day** (`Cal`, `Pro`, `Carb`, `Fat`, `Fiber`) across queries.
-* **Source Citations:** Shows exact PDF page numbers or web sources for every calculation.
+* **Session Macro Tracker:** Automatically parses meal totals and updates **Macros of the Day** (`Cal`, `Pro`, `Carb`, `Fat`, `Fiber`) across queries.
+* **Source Citations:** Displays exact PDF source names and page numbers (or web URLs) alongside every calculation.
 
 ---
 
@@ -37,10 +41,11 @@ An **Adaptive Retrieval-Augmented Generation (RAG)** agent that calculates accur
 
 ![LangGraph Architecture](assets/graph.png)
 
-1. **Retrieve:** Searches the `macronutrients-project` Pinecone index for matching foods.
-2. **Grade Documents:** Filters out irrelevant matches using structured Gemini outputs.
-3. **Web Search Fallback:** Queries Tavily if any requested food is missing from the local database.
-4. **Generate & Validate:** Scales values to requested portions, checks for hallucinations and completeness, and formats the response.
+1. **Retrieve (`retrieve`):** Queries the `macronutrients-project` Pinecone index for matching foods.
+2. **Grade Documents (`grade_documents`):** Filters out irrelevant matches using structured Gemini outputs and flags if a web search is needed.
+3. **Web Search Fallback (`web_search`):** Queries Tavily if any requested food is missing from the local database.
+4. **Generate (`generate`):** Scales nutritional values to requested portions, sums meal totals, and formats Markdown output with citations.
+5. **Hallucination & Answer Quality Loop (`decide_on_hallucination`):** Verifies that calculations are grounded in retrieved documents (`hallucination_grader`) and completely answer the user's prompt (`answer_grader`), retrying generation or triggering a web search before finishing.
 
 ---
 
@@ -105,57 +110,3 @@ MacroNutrients-Project/
 │   ├── __init__.py
 │   ├── consts.py                       # Node name constants
 │   ├── graph.py                        # StateGraph workflow and conditional routing
-│   └── state.py                        # GraphState TypedDict definition
-├── scripts/
-│   ├── extract_nutrition_data.py       # One-time Gemini PDF-to-JSON extraction script
-│   └── ingestion.py                    # One-time Pinecone batch embedding & upsert script
-├── static/
-│   ├── app.js                          # SSE stream reader, Markdown parser & macro tracker
-│   └── index.html                      # Tailwind CSS dark-mode frontend UI
-├── .dockerignore                       # Excludes local env and cache files from Docker build
-├── .env                                # Local environment variables (gitignored)
-├── .gitignore                          # Git ignore rules
-├── .python-version                     # Python version pin (3.11)
-├── Dockerfile                          # Production container configuration using uv
-├── main.py                             # FastAPI server, SSE endpoint, passkey auth & rate limiter
-├── pyproject.toml                      # Project dependencies and metadata
-├── README.md                           # Project documentation
-└── uv.lock                             # Locked dependency versions
-```
-
----
-
-## Local Setup
-
-1. **Clone & Install:**
-   ```bash
-   git clone [https://github.com/EmadSoheili/MacroNutrients-Project.git](https://github.com/EmadSoheili/MacroNutrients-Project.git)
-   cd MacroNutrients-Project
-   uv sync
-   ```
-
-2. **Add `.env` File:**
-   ```env
-   GOOGLE_API_KEY=your_google_api_key
-   PINECONE_API_KEY=your_pinecone_api_key
-   PINECONE_INDEX_NAME=macronutrients-project
-   TAVILY_API_KEY=your_tavily_api_key
-   LANGCHAIN_API_KEY=your_langsmith_api_key
-   LANGCHAIN_TRACING_V2=true
-   LANGCHAIN_PROJECT=MacroNutrients-Agent
-   DEMO_PASSKEY=your_chosen_passkey
-   ```
-
-3. **Run Server:**
-   ```bash
-   uv run uvicorn main:app --reload --port 8080
-   ```
-   Open `http://localhost:8080` and enter your `DEMO_PASSKEY`.
-
----
-
-## Deployment & Security
-
-* **Google Cloud Run:** Containerized with Docker + `uv` and configured to scale to zero when idle.
-* **CI/CD:** Connected to GitHub via Cloud Build for automatic deployments on push to `main`.
-* **Security:** Secrets stored in Google Cloud Secret Manager, protected by `x-demo-passkey` header validation and `5/minute` IP rate limiting.
