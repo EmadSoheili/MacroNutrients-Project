@@ -102,4 +102,4 @@ workflow.add_conditional_edges(
 app_graph = workflow.compile()
 
 # Draw the graph and save it as a PNG file.
-app_graph.get_graph().draw_mermaid_png(output_file_path="assets/graph.png")
+# app_graph.get_graph().draw_mermaid_png(output_file_path="assets/graph.png")
