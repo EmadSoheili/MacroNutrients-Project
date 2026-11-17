@@ -50,11 +50,11 @@ class ChatRequest(BaseModel):
     running_macros: dict = {"calories": 0.0, "protein_g": 0.0, "fat_g": 0.0, "carbs_g": 0.0, "fiber_g": 0.0}
 
 
-#
+# Define the /api/chat endpoint to handle chat requests
 @app.post("/api/chat")          # Define the /api/chat endpoint to handle chat requests
 @limiter.limit("5/minute")      # Limit to 5 requests per minute
 async def chat_endpoint(request: Request, body: ChatRequest, x_demo_passkey: str = Header(default="")):
-    """Streams graph execudion nodes and send results via Server-Sent Events (SSE) to the client."""
+    """Streams graph execution nodes and sends results via Server-Sent Events (SSE) to the client."""
 
     # Verify Passkey
     if x_demo_passkey != DEMO_PASSKEY:
@@ -72,6 +72,7 @@ async def chat_endpoint(request: Request, body: ChatRequest, x_demo_passkey: str
 
     # Define an asynchronous generator to stream graph updates
     async def event_generator():
+        yield ": connected\n\n"
         try:
             async for event in app_graph.astream(inputs, stream_mode="updates"):
                 for node_name, node_output in event.items():
@@ -91,7 +92,14 @@ async def chat_endpoint(request: Request, body: ChatRequest, x_demo_passkey: str
             yield f"data: {json.dumps({'error': str(e)})}\n\n"
 
     # Return a streaming response to the client using Server-Sent Events (SSE)
-    return StreamingResponse(event_generator(), media_type="text/event-stream")
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 
 # Mount static directory for Frontend UI
